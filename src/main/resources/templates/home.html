@@ -1,87 +1,60 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Home Page</title>
+    <title>Inicio</title>
+    <!-- Bootstrap 4 CSS (CDN rápido para el lab) -->
     <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-Meco..."
           crossorigin="anonymous">
-    <link th:href="@{/main.css}" rel="stylesheet" />
 </head>
-<body>
+<body class="bg-light">
 
-<nav class="navbar navbar-light" style="background-color: #969bd9;">
-    <span class="navbar-brand">Home Page</span>
+<div th:replace="~{fragments/navbar :: nav}"></div>
 
-    <div id="navbar" class="collapse navbar-collapse">
+<div class="container py-4">
 
-        <ul class="nav navbar-nav navbar-right">
-            <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></li>
-        </ul>
-        <ul class="nav navbar-nav">
-            <li sec:authorize="isAuthenticated()"><a th:href="@{/topic/all}"><n1>Topics</n1></a></li>
-        </ul>
+    <div th:if="${msg != null}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <span th:text="${msg}">Operación exitosa</span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span>&times;</span></button>
     </div>
-</nav>
 
-<div class="container">
-    <h1>Welcome <span sec:authentication="principal.username"> </span></h1>
+    <div class="d-flex align-items-center mb-3">
+        <h3 class="mb-0">Usuarios</h3>
+        <small class="text-muted ml-2" th:text="'(' + ${#lists.size(usuarios)} + ' encontrados)'">(0 encontrados)</small>
+    </div>
+
+    <div class="row" th:if="${usuarios != null}">
+        <div class="col-md-4 mb-4" th:each="u : ${usuarios}">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title mb-1" th:text="${u.nombre} + ' ' + ${u.apellido}">Nombre Apellido</h5>
+                    <h6 class="card-subtitle text-muted mb-2" th:text="${u.correo}">correo@mail.com</h6>
+                    <p class="card-text flex-grow-1" th:text="${u.descripcion}">Descripción del usuario…</p>
+
+                    <div class="mt-2 d-flex">
+                        <a class="btn btn-primary btn-sm mr-2"
+                           th:href="@{/mensajes/nuevo(destinatarioId=${u.id})}">
+                            Enviar mensaje
+                        </a>
+                        <a class="btn btn-outline-secondary btn-sm"
+                           th:href="@{/mensajes/recibidos/{id}(id=${u.id})}">
+                            Ver recibidos
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12" th:if="${#lists.isEmpty(usuarios)}">
+            <div class="alert alert-info">Aún no hay usuarios registrados.</div>
+        </div>
+    </div>
 </div>
 
-<div class="container my-2">
-    <a th:href="@{/newTopic}" class="btn btn-success">Create new topic</a>
-</div>
-
-<div class="container my-3">
-    <a th:href="@{/topic/search}" class="btn btn-success">Find topic</a>
-</div>
-
-<div align="center" class="container my-2">
-    <h3>Last activity</h3>
-    <table border="1" style="width:800px" class="table table-bordered table-striped">
-        <thead>
-        <tr>
-            <th>Topic name</th>
-            <th>Date activity</th>
-            <th>Login</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="inscription : ${newInscriptionList}">
-            <td>
-                <a th:href="@{/topic/{id}(id = ${inscription.topic.id})}" th:text="${inscription.topic.title}"></a>
-            </td>
-            <td th:width="200" th:text="${#dates.format(inscription.createdAt, 'dd-MM-yyyy | HH:mm')}"></td>
-            <td th:width="200" th:text="${inscription.user.login}"></td>
-        </tr>
-        </tbody>
-    </table>
-
-</div>
-
-<div align="center" class="container my-2">
-    <h3>New Topics</h3>
-    <table border="1" style="width:800px" class="table table-bordered table-striped">
-        <thead>
-        <tr>
-            <th>Topic name</th>
-            <th>Created</th>
-            <th>Login</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="topic : ${newTopicList}">
-            <td>
-                <a th:href="@{/topic/{id}(id = ${topic.id})}" th:text="${topic.title}"></a>
-            </td>
-            <td th:width="200" th:text="${#dates.format(topic.createdAt, 'dd-MM-yyyy | HH:mm')}"></td>
-            <td th:width="200" th:text="${topic.user.login}"></td>
-        </tr>
-        </tbody>
-    </table>
-
-</div>
-
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
 </body>
 </html>

@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light" th:fragment="nav">
+    <a class="navbar-brand" th:href="@{/}">GTICS Lab5</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navGTICS"
+            aria-controls="navGTICS" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navGTICS">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item"><a class="nav-link" th:href="@{/}">Inicio</a></li>
+            <li class="nav-item"><a class="nav-link" th:href="@{/usuarios/nuevo}">Registro</a></li>
+            <li class="nav-item"><a class="nav-link" th:href="@{/mensajes/nuevo}">Enviar mensaje</a></li>
+            <li class="nav-item"><a class="nav-link" th:href="@{/ranking}">Ranking</a></li>
+        </ul>
+    </div>
+</nav>
+</body>
+</html>

@@ -24,7 +24,7 @@ public class HomeController {
 
     @GetMapping(value = {"/principal", "/"})
     public String home(Model model){
-        model.addAttribute("listaUsuarios", usuarioRepository.findAll());
+        model.addAttribute("usuarios", usuarioRepository.findAll());
         System.out.println("Se consigio relacion con la bd");
 
         return "home";
