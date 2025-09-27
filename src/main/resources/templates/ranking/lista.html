@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Ranking de usuarios</title>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          crossorigin="anonymous">
+</head>
+<body class="bg-light">
+
+<div th:replace="~{fragments/navbar :: nav}"></div>
+
+<div class="container py-4">
+    <h3>Ranking de usuarios</h3>
+
+    <table class="table table-striped mt-3">
+        <thead>
+        <tr>
+            <th>Posición</th>
+            <th>Usuario</th>
+            <th>Total de regalos recibidos</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="fila, iter : ${ranking}">
+            <td th:text="${iter.index + 1}"></td>
+            <td th:text="${fila[0].nombre + ' ' + fila[0].apellido}"></td>
+            <td th:text="${fila[1]}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

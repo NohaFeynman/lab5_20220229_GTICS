@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Mensajes recibidos</title>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          crossorigin="anonymous">
+</head>
+<body class="bg-light">
+
+<div th:replace="~{fragments/navbar :: nav}"></div>
+
+<div class="container py-4">
+    <h3 th:text="'Mensajes recibidos (' + ${total} + ')'"></h3>
+
+    <div class="mt-3" th:if="${total == 0}">
+        <p>No hay mensajes recibidos.</p>
+    </div>
+
+    <div class="list-group mt-3" th:if="${total > 0}">
+        <div class="list-group-item mb-2" th:each="m : ${mensajes}">
+            <p><strong>De:</strong> <span th:text="${m.remitenteId}"></span></p>
+            <p><strong>Regalo:</strong>
+                <span th:text="${m.regaloTipo}"></span>
+                <span th:if="${m.regaloColor != null}" th:text="'(' + ${m.regaloColor} + ')'"></span>
+            </p>
+            <p><strong>Mensaje:</strong> <span th:text="${m.contenido}"></span></p>
+            <p><em th:text="${#dates.format(m.fechaEnvio, 'dd/MM/yyyy HH:mm')}"></em></p>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
